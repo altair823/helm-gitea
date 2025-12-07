@@ -3,12 +3,11 @@ kind: Kustomization
 
 namespace: gitea
 
-helmGlobals:
-  chartHome: ../../../../
-
 helmCharts:
-  - name: helm-gitea
-    releaseName: helm-gitea
+  - name: gitea
+    repo: https://dl.gitea.com/charts/
+    releaseName: gitea
+    version: 12.4.0
     valuesFile: values-dev.yaml
 resources:
   - gateway.yaml

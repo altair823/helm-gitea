@@ -3,12 +3,12 @@ automountServiceAccountToken: false
 kind: ServiceAccount
 metadata:
   labels:
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql-ha
     app.kubernetes.io/version: 17.6.0
     helm.sh/chart: postgresql-ha-16.3.2
-  name: helm-gitea-postgresql-ha
+  name: gitea-postgresql-ha
   namespace: gitea
 ---
 apiVersion: v1
@@ -16,12 +16,12 @@ automountServiceAccountToken: false
 kind: ServiceAccount
 metadata:
   labels:
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey-cluster
     app.kubernetes.io/version: 8.1.3
     helm.sh/chart: valkey-cluster-3.0.24
-  name: helm-gitea-valkey-cluster
+  name: gitea-valkey-cluster
   namespace: gitea
 ---
 apiVersion: v1
@@ -148,12 +148,12 @@ kind: ConfigMap
 metadata:
   labels:
     app.kubernetes.io/component: postgresql
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql-ha
     app.kubernetes.io/version: 17.6.0
     helm.sh/chart: postgresql-ha-16.3.2
-  name: helm-gitea-postgresql-ha-postgresql-scripts
+  name: gitea-postgresql-ha-postgresql-scripts
   namespace: gitea
 ---
 apiVersion: v1
@@ -1474,12 +1474,12 @@ data:
 kind: ConfigMap
 metadata:
   labels:
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey-cluster
     app.kubernetes.io/version: 8.1.3
     helm.sh/chart: valkey-cluster-3.0.24
-  name: helm-gitea-valkey-cluster-default
+  name: gitea-valkey-cluster-default
   namespace: gitea
 ---
 apiVersion: v1
@@ -1547,12 +1547,12 @@ data:
 kind: ConfigMap
 metadata:
   labels:
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey-cluster
     app.kubernetes.io/version: 8.1.3
     helm.sh/chart: valkey-cluster-3.0.24
-  name: helm-gitea-valkey-cluster-scripts
+  name: gitea-valkey-cluster-scripts
   namespace: gitea
 ---
 apiVersion: v1
@@ -1560,13 +1560,13 @@ kind: Secret
 metadata:
   labels:
     app: gitea
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gitea
     app.kubernetes.io/version: 1.25.2
-    helm.sh/chart: gitea-0.0.0
+    helm.sh/chart: gitea-12.4.0
     version: 1.25.2
-  name: helm-gitea
+  name: gitea
   namespace: gitea
 stringData:
   assertions: ""
@@ -1732,13 +1732,13 @@ kind: Secret
 metadata:
   labels:
     app: gitea
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gitea
     app.kubernetes.io/version: 1.25.2
-    helm.sh/chart: gitea-0.0.0
+    helm.sh/chart: gitea-12.4.0
     version: 1.25.2
-  name: helm-gitea-init
+  name: gitea-init
   namespace: gitea
 stringData:
   configure_gitea.sh: "#!/usr/bin/env bash\n\nset -euo pipefail\n\necho '==== BEGIN
@@ -1746,7 +1746,7 @@ stringData:
     \"Gitea migrate might fail due to database connection...This init-container will
     try again in a few seconds\"\n  exit 1\n}\nfunction test_valkey_connection() {\n
     \ local RETRY=0\n  local MAX=30\n  \n  echo 'Wait for valkey to become avialable...'\n
-    \ until [ \"${RETRY}\" -ge \"${MAX}\" ]; do\n    nc -vz -w2 helm-gitea-valkey-cluster-headless.gitea.svc.cluster.local
+    \ until [ \"${RETRY}\" -ge \"${MAX}\" ]; do\n    nc -vz -w2 gitea-valkey-cluster-headless.gitea.svc.cluster.local
     6379 && break\n    RETRY=$[${RETRY}+1]\n    echo \"...not ready yet (${RETRY}/${MAX})\"\n
     \ done\n\n  if [ \"${RETRY}\" -ge \"${MAX}\" ]; then\n    echo \"Valkey not reachable
     after '${MAX}' attempts!\"\n    exit 1\n  fi\n}\n\ntest_valkey_connection\nfunction
@@ -1813,29 +1813,29 @@ kind: Secret
 metadata:
   labels:
     app: gitea
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gitea
     app.kubernetes.io/version: 1.25.2
-    helm.sh/chart: gitea-0.0.0
+    helm.sh/chart: gitea-12.4.0
     version: 1.25.2
-  name: helm-gitea-inline-config
+  name: gitea-inline-config
   namespace: gitea
 stringData:
   _generals_: ""
   cache: |-
     ADAPTER=redis
-    HOST=redis+cluster://:@helm-gitea-valkey-cluster-headless.gitea.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
+    HOST=redis+cluster://:@gitea-valkey-cluster-headless.gitea.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
   database: |-
     DB_TYPE=postgres
-    HOST=helm-gitea-postgresql-ha-pgpool.gitea.svc.cluster.local:5432
+    HOST=gitea-postgresql-ha-pgpool.gitea.svc.cluster.local:5432
     NAME=gitea
     PASSWD=gitea
     USER=gitea
   indexer: ISSUE_INDEXER_TYPE=db
   metrics: ENABLED=false
   queue: |-
-    CONN_STR=redis+cluster://:@helm-gitea-valkey-cluster-headless.gitea.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
+    CONN_STR=redis+cluster://:@gitea-valkey-cluster-headless.gitea.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
     TYPE=redis
   repository: ROOT=/data/git/gitea-repositories
   security: INSTALL_LOCK=true
@@ -1852,7 +1852,7 @@ stringData:
     START_SSH_SERVER=true
   session: |-
     PROVIDER=redis
-    PROVIDER_CONFIG=redis+cluster://:@helm-gitea-valkey-cluster-headless.gitea.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
+    PROVIDER_CONFIG=redis+cluster://:@gitea-valkey-cluster-headless.gitea.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
 type: Opaque
 ---
 apiVersion: v1
@@ -1863,12 +1863,12 @@ kind: Secret
 metadata:
   labels:
     app.kubernetes.io/component: pgpool
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql-ha
     app.kubernetes.io/version: 4.6.3
     helm.sh/chart: postgresql-ha-16.3.2
-  name: helm-gitea-postgresql-ha-pgpool
+  name: gitea-postgresql-ha-pgpool
   namespace: gitea
 type: Opaque
 ---
@@ -1881,12 +1881,12 @@ kind: Secret
 metadata:
   labels:
     app.kubernetes.io/component: postgresql
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql-ha
     app.kubernetes.io/version: 17.6.0
     helm.sh/chart: postgresql-ha-16.3.2
-  name: helm-gitea-postgresql-ha-postgresql
+  name: gitea-postgresql-ha-postgresql
   namespace: gitea
 type: Opaque
 ---
@@ -1895,13 +1895,13 @@ kind: Service
 metadata:
   labels:
     app: gitea
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gitea
     app.kubernetes.io/version: 1.25.2
-    helm.sh/chart: gitea-0.0.0
+    helm.sh/chart: gitea-12.4.0
     version: 1.25.2
-  name: helm-gitea-http
+  name: gitea-http
   namespace: gitea
 spec:
   clusterIP: None
@@ -1910,7 +1910,7 @@ spec:
     port: 3000
     targetPort: null
   selector:
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/name: gitea
   type: ClusterIP
 ---
@@ -1919,12 +1919,12 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: pgpool
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql-ha
     app.kubernetes.io/version: 4.6.3
     helm.sh/chart: postgresql-ha-16.3.2
-  name: helm-gitea-postgresql-ha-pgpool
+  name: gitea-postgresql-ha-pgpool
   namespace: gitea
 spec:
   ports:
@@ -1935,7 +1935,7 @@ spec:
     targetPort: postgresql
   selector:
     app.kubernetes.io/component: pgpool
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/name: postgresql-ha
   sessionAffinity: None
   type: ClusterIP
@@ -1945,12 +1945,12 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: postgresql
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql-ha
     app.kubernetes.io/version: 17.6.0
     helm.sh/chart: postgresql-ha-16.3.2
-  name: helm-gitea-postgresql-ha-postgresql
+  name: gitea-postgresql-ha-postgresql
   namespace: gitea
 spec:
   ports:
@@ -1960,7 +1960,7 @@ spec:
     targetPort: postgresql
   selector:
     app.kubernetes.io/component: postgresql
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/name: postgresql-ha
     role: data
   type: ClusterIP
@@ -1969,12 +1969,12 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql-ha
     app.kubernetes.io/version: 17.6.0
     helm.sh/chart: postgresql-ha-16.3.2
-  name: helm-gitea-postgresql-ha-postgresql-headless
+  name: gitea-postgresql-ha-postgresql-headless
   namespace: gitea
 spec:
   clusterIP: None
@@ -1986,7 +1986,7 @@ spec:
   publishNotReadyAddresses: false
   selector:
     app.kubernetes.io/component: postgresql
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/name: postgresql-ha
     role: data
   type: ClusterIP
@@ -1996,13 +1996,13 @@ kind: Service
 metadata:
   labels:
     app: gitea
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gitea
     app.kubernetes.io/version: 1.25.2
-    helm.sh/chart: gitea-0.0.0
+    helm.sh/chart: gitea-12.4.0
     version: 1.25.2
-  name: helm-gitea-ssh
+  name: gitea-ssh
   namespace: gitea
 spec:
   clusterIP: None
@@ -2012,7 +2012,7 @@ spec:
     protocol: TCP
     targetPort: 2222
   selector:
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/name: gitea
   type: ClusterIP
 ---
@@ -2020,12 +2020,12 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey-cluster
     app.kubernetes.io/version: 8.1.3
     helm.sh/chart: valkey-cluster-3.0.24
-  name: helm-gitea-valkey-cluster
+  name: gitea-valkey-cluster
   namespace: gitea
 spec:
   ports:
@@ -2035,7 +2035,7 @@ spec:
     protocol: TCP
     targetPort: tcp-redis
   selector:
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/name: valkey-cluster
   sessionAffinity: None
   type: ClusterIP
@@ -2044,12 +2044,12 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey-cluster
     app.kubernetes.io/version: 8.1.3
     helm.sh/chart: valkey-cluster-3.0.24
-  name: helm-gitea-valkey-cluster-headless
+  name: gitea-valkey-cluster-headless
   namespace: gitea
 spec:
   clusterIP: None
@@ -2062,7 +2062,7 @@ spec:
     targetPort: tcp-redis-bus
   publishNotReadyAddresses: true
   selector:
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/name: valkey-cluster
   type: ClusterIP
 ---
@@ -2071,19 +2071,19 @@ kind: Deployment
 metadata:
   labels:
     app: gitea
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gitea
     app.kubernetes.io/version: 1.25.2
-    helm.sh/chart: gitea-0.0.0
+    helm.sh/chart: gitea-12.4.0
     version: 1.25.2
-  name: helm-gitea
+  name: gitea
   namespace: gitea
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app.kubernetes.io/instance: helm-gitea
+      app.kubernetes.io/instance: gitea
       app.kubernetes.io/name: gitea
   strategy:
     rollingUpdate:
@@ -2093,14 +2093,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1304ebd948371bd69903c2cacc7a869ea0b7263cdee225f9067baa53b7fdac34
+        checksum/config: 2ebcf2c8e9f6b0ba3bccb20734744faebc715d62e562e6ba10af7ce81d818a95
       labels:
         app: gitea
-        app.kubernetes.io/instance: helm-gitea
+        app.kubernetes.io/instance: gitea
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: gitea
         app.kubernetes.io/version: 1.25.2
-        helm.sh/chart: gitea-0.0.0
+        helm.sh/chart: gitea-12.4.0
         version: 1.25.2
     spec:
       containers:
@@ -2267,14 +2267,14 @@ spec:
       - name: init
         secret:
           defaultMode: 110
-          secretName: helm-gitea-init
+          secretName: gitea-init
       - name: config
         secret:
           defaultMode: 110
-          secretName: helm-gitea
+          secretName: gitea
       - name: inline-config-sources
         secret:
-          secretName: helm-gitea-inline-config
+          secretName: gitea-inline-config
       - emptyDir: {}
         name: temp
       - name: data
@@ -2286,26 +2286,26 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: pgpool
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql-ha
     app.kubernetes.io/version: 4.6.3
     helm.sh/chart: postgresql-ha-16.3.2
-  name: helm-gitea-postgresql-ha-pgpool
+  name: gitea-postgresql-ha-pgpool
   namespace: gitea
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: pgpool
-      app.kubernetes.io/instance: helm-gitea
+      app.kubernetes.io/instance: gitea
       app.kubernetes.io/name: postgresql-ha
   template:
     metadata:
       annotations: null
       labels:
         app.kubernetes.io/component: pgpool
-        app.kubernetes.io/instance: helm-gitea
+        app.kubernetes.io/instance: gitea
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: postgresql-ha
         app.kubernetes.io/version: 4.6.3
@@ -2320,7 +2320,7 @@ spec:
               labelSelector:
                 matchLabels:
                   app.kubernetes.io/component: pgpool
-                  app.kubernetes.io/instance: helm-gitea
+                  app.kubernetes.io/instance: gitea
                   app.kubernetes.io/name: postgresql-ha
               topologyKey: kubernetes.io/hostname
             weight: 1
@@ -2334,7 +2334,7 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
         - name: PGPOOL_BACKEND_NODES
-          value: 0:helm-gitea-postgresql-ha-postgresql-0.helm-gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local:5432,1:helm-gitea-postgresql-ha-postgresql-1.helm-gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local:5432,2:helm-gitea-postgresql-ha-postgresql-2.helm-gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local:5432,
+          value: 0:gitea-postgresql-ha-postgresql-0.gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local:5432,1:gitea-postgresql-ha-postgresql-1.gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local:5432,2:gitea-postgresql-ha-postgresql-2.gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local:5432,
         - name: PGPOOL_SR_CHECK_USER
           value: sr_check_user
         - name: PGPOOL_SR_CHECK_PASSWORD_FILE
@@ -2456,7 +2456,7 @@ spec:
         fsGroupChangePolicy: Always
         supplementalGroups: []
         sysctls: []
-      serviceAccountName: helm-gitea-postgresql-ha
+      serviceAccountName: gitea-postgresql-ha
       volumes:
       - emptyDir: {}
         name: empty-dir
@@ -2465,23 +2465,23 @@ spec:
           items:
           - key: password
             path: pgpool-password
-          secretName: helm-gitea-postgresql-ha-postgresql
+          secretName: gitea-postgresql-ha-postgresql
       - name: pgpool-creds
         secret:
-          secretName: helm-gitea-postgresql-ha-pgpool
+          secretName: gitea-postgresql-ha-pgpool
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
     app.kubernetes.io/component: postgresql
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql-ha
     app.kubernetes.io/version: 17.6.0
     helm.sh/chart: postgresql-ha-16.3.2
     role: data
-  name: helm-gitea-postgresql-ha-postgresql
+  name: gitea-postgresql-ha-postgresql
   namespace: gitea
 spec:
   podManagementPolicy: Parallel
@@ -2489,16 +2489,16 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: postgresql
-      app.kubernetes.io/instance: helm-gitea
+      app.kubernetes.io/instance: gitea
       app.kubernetes.io/name: postgresql-ha
       role: data
-  serviceName: helm-gitea-postgresql-ha-postgresql-headless
+  serviceName: gitea-postgresql-ha-postgresql-headless
   template:
     metadata:
       annotations: null
       labels:
         app.kubernetes.io/component: postgresql
-        app.kubernetes.io/instance: helm-gitea
+        app.kubernetes.io/instance: gitea
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: postgresql-ha
         app.kubernetes.io/version: 17.6.0
@@ -2514,7 +2514,7 @@ spec:
               labelSelector:
                 matchLabels:
                   app.kubernetes.io/component: postgresql
-                  app.kubernetes.io/instance: helm-gitea
+                  app.kubernetes.io/instance: gitea
                   app.kubernetes.io/name: postgresql-ha
               topologyKey: kubernetes.io/hostname
             weight: 1
@@ -2570,13 +2570,13 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
         - name: REPMGR_PARTNER_NODES
-          value: helm-gitea-postgresql-ha-postgresql-0.helm-gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local,helm-gitea-postgresql-ha-postgresql-1.helm-gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local,helm-gitea-postgresql-ha-postgresql-2.helm-gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local,
+          value: gitea-postgresql-ha-postgresql-0.gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local,gitea-postgresql-ha-postgresql-1.gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local,gitea-postgresql-ha-postgresql-2.gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local,
         - name: REPMGR_PRIMARY_HOST
-          value: helm-gitea-postgresql-ha-postgresql-0.helm-gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local
+          value: gitea-postgresql-ha-postgresql-0.gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local
         - name: REPMGR_NODE_NAME
           value: $(MY_POD_NAME)
         - name: REPMGR_NODE_NETWORK_NAME
-          value: $(MY_POD_NAME).helm-gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local
+          value: $(MY_POD_NAME).gitea-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local
         - name: REPMGR_NODE_TYPE
           value: data
         - name: REPMGR_LOG_LEVEL
@@ -2716,20 +2716,20 @@ spec:
         fsGroupChangePolicy: Always
         supplementalGroups: []
         sysctls: []
-      serviceAccountName: helm-gitea-postgresql-ha
+      serviceAccountName: gitea-postgresql-ha
       volumes:
       - emptyDir: {}
         name: empty-dir
       - configMap:
           defaultMode: 493
-          name: helm-gitea-postgresql-ha-postgresql-scripts
+          name: gitea-postgresql-ha-postgresql-scripts
         name: scripts
       - name: postgresql-creds
         secret:
-          secretName: helm-gitea-postgresql-ha-postgresql
+          secretName: gitea-postgresql-ha-postgresql
       - name: pgpool-creds
         secret:
-          secretName: helm-gitea-postgresql-ha-pgpool
+          secretName: gitea-postgresql-ha-pgpool
   updateStrategy:
     type: RollingUpdate
   volumeClaimTemplates:
@@ -2749,29 +2749,29 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey-cluster
     app.kubernetes.io/version: 8.1.3
     helm.sh/chart: valkey-cluster-3.0.24
-  name: helm-gitea-valkey-cluster
+  name: gitea-valkey-cluster
   namespace: gitea
 spec:
   podManagementPolicy: Parallel
   replicas: 3
   selector:
     matchLabels:
-      app.kubernetes.io/instance: helm-gitea
+      app.kubernetes.io/instance: gitea
       app.kubernetes.io/name: valkey-cluster
-  serviceName: helm-gitea-valkey-cluster-headless
+  serviceName: gitea-valkey-cluster-headless
   template:
     metadata:
       annotations:
-        checksum/config: 9c2dc1dd79834cc8aee9f57f62430d452c8977e89aa8b45771acf360cf8532b3
-        checksum/scripts: a4d07987c449aab3a494a55d4dac0edbcf4d5bb4cc171b478ad32bf6d179b575
+        checksum/config: 44b880d412d2f853a66bc0756866832dd2b196116f3111287e80268bbbc0101e
+        checksum/scripts: 4ee896f8ae3b27edce6103912f6275663ad54c3227db77aeb84d43e8676b252f
         checksum/secret: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
       labels:
-        app.kubernetes.io/instance: helm-gitea
+        app.kubernetes.io/instance: gitea
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: valkey-cluster
         app.kubernetes.io/version: 8.1.3
@@ -2785,7 +2785,7 @@ spec:
           - podAffinityTerm:
               labelSelector:
                 matchLabels:
-                  app.kubernetes.io/instance: helm-gitea
+                  app.kubernetes.io/instance: gitea
                   app.kubernetes.io/name: valkey-cluster
               topologyKey: kubernetes.io/hostname
             weight: 1
@@ -2814,8 +2814,8 @@ spec:
             fieldRef:
               fieldPath: metadata.name
         - name: VALKEY_NODES
-          value: 'helm-gitea-valkey-cluster-0.helm-gitea-valkey-cluster-headless helm-gitea-valkey-cluster-1.helm-gitea-valkey-cluster-headless
-            helm-gitea-valkey-cluster-2.helm-gitea-valkey-cluster-headless '
+          value: 'gitea-valkey-cluster-0.gitea-valkey-cluster-headless gitea-valkey-cluster-1.gitea-valkey-cluster-headless
+            gitea-valkey-cluster-2.gitea-valkey-cluster-headless '
         - name: ALLOW_EMPTY_PASSWORD
           value: "yes"
         - name: VALKEY_AOF_ENABLED
@@ -2837,7 +2837,7 @@ spec:
           periodSeconds: 5
           successThreshold: 1
           timeoutSeconds: 6
-        name: helm-gitea-valkey-cluster
+        name: gitea-valkey-cluster
         ports:
         - containerPort: 6379
           name: tcp-redis
@@ -2904,14 +2904,14 @@ spec:
         fsGroupChangePolicy: Always
         supplementalGroups: []
         sysctls: []
-      serviceAccountName: helm-gitea-valkey-cluster
+      serviceAccountName: gitea-valkey-cluster
       volumes:
       - configMap:
           defaultMode: 493
-          name: helm-gitea-valkey-cluster-scripts
+          name: gitea-valkey-cluster-scripts
         name: scripts
       - configMap:
-          name: helm-gitea-valkey-cluster-default
+          name: gitea-valkey-cluster-default
         name: default-config
       - emptyDir: {}
         name: empty-dir
@@ -2922,7 +2922,7 @@ spec:
   volumeClaimTemplates:
   - metadata:
       labels:
-        app.kubernetes.io/instance: helm-gitea
+        app.kubernetes.io/instance: gitea
         app.kubernetes.io/name: valkey-cluster
       name: valkey-data
     spec:
@@ -2938,19 +2938,19 @@ kind: PodDisruptionBudget
 metadata:
   labels:
     app.kubernetes.io/component: pgpool
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql-ha
     app.kubernetes.io/version: 4.6.3
     helm.sh/chart: postgresql-ha-16.3.2
-  name: helm-gitea-postgresql-ha-pgpool
+  name: gitea-postgresql-ha-pgpool
   namespace: gitea
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: pgpool
-      app.kubernetes.io/instance: helm-gitea
+      app.kubernetes.io/instance: gitea
       app.kubernetes.io/name: postgresql-ha
 ---
 apiVersion: policy/v1
@@ -2958,19 +2958,19 @@ kind: PodDisruptionBudget
 metadata:
   labels:
     app.kubernetes.io/component: postgresql
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql-ha
     app.kubernetes.io/version: 17.6.0
     helm.sh/chart: postgresql-ha-16.3.2
-  name: helm-gitea-postgresql-ha-postgresql
+  name: gitea-postgresql-ha-postgresql
   namespace: gitea
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: postgresql
-      app.kubernetes.io/instance: helm-gitea
+      app.kubernetes.io/instance: gitea
       app.kubernetes.io/name: postgresql-ha
 ---
 apiVersion: policy/v1
@@ -2978,20 +2978,20 @@ kind: PodDisruptionBudget
 metadata:
   labels:
     app.kubernetes.io/component: postgresql
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql-ha
     app.kubernetes.io/version: 17.6.0
     helm.sh/chart: postgresql-ha-16.3.2
     role: witness
-  name: helm-gitea-postgresql-ha-postgresql-witness
+  name: gitea-postgresql-ha-postgresql-witness
   namespace: gitea
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: postgresql
-      app.kubernetes.io/instance: helm-gitea
+      app.kubernetes.io/instance: gitea
       app.kubernetes.io/name: postgresql-ha
       role: witness
 ---
@@ -2999,12 +2999,12 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   labels:
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey-cluster
     app.kubernetes.io/version: 8.1.3
     helm.sh/chart: valkey-cluster-3.0.24
-  name: helm-gitea-valkey-cluster
+  name: gitea-valkey-cluster
   namespace: gitea
 spec:
   maxUnavailable: 1
@@ -3013,9 +3013,9 @@ spec:
     - key: job-name
       operator: NotIn
       values:
-      - helm-gitea-valkey-cluster-cluster-update
+      - gitea-valkey-cluster-cluster-update
     matchLabels:
-      app.kubernetes.io/instance: helm-gitea
+      app.kubernetes.io/instance: gitea
       app.kubernetes.io/name: valkey-cluster
 ---
 apiVersion: gateway.networking.k8s.io/v1
@@ -3058,13 +3058,13 @@ kind: NetworkPolicy
 metadata:
   labels:
     app.kubernetes.io/component: pgpool
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql-ha
     app.kubernetes.io/version: 17.6.0
     helm.sh/chart: postgresql-ha-16.3.2
     role: data
-  name: helm-gitea-postgresql-ha-pgpool
+  name: gitea-postgresql-ha-pgpool
   namespace: gitea
 spec:
   egress:
@@ -3075,7 +3075,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/component: pgpool
-      app.kubernetes.io/instance: helm-gitea
+      app.kubernetes.io/instance: gitea
       app.kubernetes.io/name: postgresql-ha
   policyTypes:
   - Ingress
@@ -3086,13 +3086,13 @@ kind: NetworkPolicy
 metadata:
   labels:
     app.kubernetes.io/component: postgresql
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql-ha
     app.kubernetes.io/version: 17.6.0
     helm.sh/chart: postgresql-ha-16.3.2
     role: data
-  name: helm-gitea-postgresql-ha-postgresql
+  name: gitea-postgresql-ha-postgresql
   namespace: gitea
 spec:
   egress:
@@ -3103,7 +3103,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/component: postgresql
-      app.kubernetes.io/instance: helm-gitea
+      app.kubernetes.io/instance: gitea
       app.kubernetes.io/name: postgresql-ha
   policyTypes:
   - Ingress
@@ -3113,12 +3113,12 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   labels:
-    app.kubernetes.io/instance: helm-gitea
+    app.kubernetes.io/instance: gitea
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: valkey-cluster
     app.kubernetes.io/version: 8.1.3
     helm.sh/chart: valkey-cluster-3.0.24
-  name: helm-gitea-valkey-cluster
+  name: gitea-valkey-cluster
   namespace: gitea
 spec:
   egress:
@@ -3129,7 +3129,7 @@ spec:
     - port: 16379
   podSelector:
     matchLabels:
-      app.kubernetes.io/instance: helm-gitea
+      app.kubernetes.io/instance: gitea
       app.kubernetes.io/name: valkey-cluster
   policyTypes:
   - Ingress
