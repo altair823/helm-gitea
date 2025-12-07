@@ -21,7 +21,7 @@ global:
   #   - example.com
 
 ## @param namespace An explicit namespace to deploy gitea into. Defaults to the release namespace if not specified
-namespace: ""
+namespace: "gitea"
 
 ## @param replicaCount number of replicas for the deployment
 replicaCount: 3
