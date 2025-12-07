@@ -435,6 +435,8 @@ gitea:
     server:
       SSH_PORT: 22 # rootful image
       SSH_LISTEN_PORT: 2222 # rootless image
+    database:
+      HOST: gitea-postgresql-ha-pgpool.gitea.svc.cluster.local:5432
   #
   #  security:
   #    PASSWORD_COMPLEXITY: spec
