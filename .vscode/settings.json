@@ -1,15 +1,16 @@
 {
-    "yaml.schemas": {
-        "https://raw.githubusercontent.com/helm-unittest/helm-unittest/v1.0.3/schema/helm-testsuite.json": [
-            "/unittests/**/*.yaml"
-        ]
-    },
-    "yaml.schemaStore.enable": true,
-    "[bats]": {
-        "editor.tabSize": 2
-    },
-    "[shellscript]": {
-        "files.eol": "\n",
-        "editor.tabSize": 2
-    }
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/helm-unittest/helm-unittest/v1.0.3/schema/helm-testsuite.json": [
+      "/unittests/**/*.yaml"
+    ]
+  },
+  "yaml.schemaStore.enable": true,
+  "[bats]": {
+    "editor.tabSize": 2
+  },
+  "[shellscript]": {
+    "files.eol": "\n",
+    "editor.tabSize": 2
+  },
+  "makefile.configureOnOpen": true
 }

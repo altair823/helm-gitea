@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: gitea-prod
+
+# Local Helm Chart is rendered using: make render-prod
+# The rendered manifests are then used as resources
+resources:
+  - rendered-manifests.yaml
+
+patches:
+  - target:
+      kind: Namespace
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: gitea-prod
+
