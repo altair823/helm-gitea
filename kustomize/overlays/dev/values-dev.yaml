@@ -437,6 +437,15 @@ gitea:
       SSH_LISTEN_PORT: 2222 # rootless image
     database:
       HOST: gitea-postgresql-ha-pgpool.gitea.svc.cluster.local:5432
+    cache:
+      ADAPTER: redis
+      HOST: redis+cluster://:@gitea-valkey-cluster-headless.gitea.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
+    queue:
+      TYPE: redis
+      CONN_STR: redis+cluster://:@gitea-valkey-cluster-headless.gitea.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
+    session:
+      PROVIDER: redis
+      PROVIDER_CONFIG: redis+cluster://:@gitea-valkey-cluster-headless.gitea.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
   #
   #  security:
   #    PASSWORD_COMPLEXITY: spec
