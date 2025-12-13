@@ -274,7 +274,7 @@ persistence:
   accessModes:
     - ReadWriteMany
   # labels: {}
-  # storageClass: longhorn
+  storageClass: nfs-client
   # annotations:
   #   helm.sh/resource-policy: keep
 
