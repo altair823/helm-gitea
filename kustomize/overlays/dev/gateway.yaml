@@ -6,7 +6,7 @@ metadata:
 spec:
   gatewayClassName: istio
   addresses:
-    - value: "192.168.41.20"
+    - value: "192.168.81.20"
   listeners:
     - name: http
       protocol: HTTP
