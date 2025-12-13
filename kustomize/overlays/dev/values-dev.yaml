@@ -666,11 +666,12 @@ postgresql-ha:
 
   ## @param postgresql-ha.persistence.size PVC Storage Request for PostgreSQL HA volume
   persistence:
-    # subPath: postgresql
+    storageClass: longhorn
+    subPath: postgresql
     volumeName: postgresql-shared-storage
     accessModes:
       - ReadWriteOnce
-    # size: 1Gi
+    size: 1Gi
 
   ## @param postgresql-ha.volumePermissions.image.repository Image repository, eg. `bitnamilegacy/os-shell`.
   volumePermissions:
