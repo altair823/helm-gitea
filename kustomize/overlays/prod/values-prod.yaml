@@ -431,7 +431,7 @@ gitea:
   ## @param gitea.config.server.SSH_LISTEN_PORT SSH port for rootless Gitea image
   config:
     #  APP_NAME: "Gitea: Git with a cup of tea"
-    #  RUN_MODE: dev
+    #  RUN_MODE: prod
     server:
       SSH_PORT: 22 # rootful image
       SSH_LISTEN_PORT: 2222 # rootless image
@@ -544,6 +544,10 @@ valkey-cluster:
   ## @param valkey-cluster.image.repository Image repository, eg. `bitnamilegacy/valkey-cluster`.
   image:
     repository: bitnamilegacy/valkey-cluster
+
+  persistence:
+    storageClass: longhorn
+    size: 1Gi
 
   ## @param valkey-cluster.cluster.nodes Number of valkey cluster master nodes
   ## @param valkey-cluster.cluster.replicas Number of valkey cluster master node replicas
@@ -666,11 +670,12 @@ postgresql-ha:
 
   ## @param postgresql-ha.persistence.size PVC Storage Request for PostgreSQL HA volume
   persistence:
-    # subPath: postgresql
+    storageClass: longhorn
+    subPath: postgresql
     volumeName: postgresql-shared-storage
     accessModes:
       - ReadWriteOnce
-    # size: 1Gi
+    size: 1Gi
 
   ## @param postgresql-ha.volumePermissions.image.repository Image repository, eg. `bitnamilegacy/os-shell`.
   volumePermissions:
@@ -715,7 +720,7 @@ postgresql:
     image:
       repository: bitnamilegacy/os-shell
 
-# By default, removed or moved settings that still remain in a user defined values-dev.yaml will cause Helm to fail running the install/update.
+# By default, removed or moved settings that still remain in a user defined values-prod.yaml will cause Helm to fail running the install/update.
 # Set it to false to skip this basic validation check.
 ## @section Advanced
 ## @param checkDeprecation Set it to false to skip this basic validation check.
