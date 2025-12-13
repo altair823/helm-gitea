@@ -270,11 +270,11 @@ persistence:
   create: false
   mount: true
   claimName: gitea-shared-storage
-  # size: 2Gi
+  size: 16Gi
   accessModes:
     - ReadWriteMany
   # labels: {}
-  # storageClass: longhorn
+  storageClass: longhorn
   # annotations:
   #   helm.sh/resource-policy: keep
 
@@ -547,7 +547,7 @@ valkey-cluster:
 
   persistence:
     storageClass: longhorn
-    size: 1Gi
+    size: 4Gi
 
   ## @param valkey-cluster.cluster.nodes Number of valkey cluster master nodes
   ## @param valkey-cluster.cluster.replicas Number of valkey cluster master node replicas
@@ -675,7 +675,7 @@ postgresql-ha:
     volumeName: postgresql-shared-storage
     accessModes:
       - ReadWriteOnce
-    size: 1Gi
+    size: 8Gi
 
   ## @param postgresql-ha.volumePermissions.image.repository Image repository, eg. `bitnamilegacy/os-shell`.
   volumePermissions:
