@@ -12,6 +12,7 @@ helmCharts:
 resources:
   - gateway.yaml
   - httproute.yaml
+  - pvc.yaml
 
 patchesStrategicMerge:
   - patch-init-secret.yaml
