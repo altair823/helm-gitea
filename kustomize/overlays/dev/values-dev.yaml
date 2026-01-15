@@ -269,7 +269,7 @@ persistence:
   enabled: true
   create: true # kustomize에서 별도로 PVC 생성
   mount: true
-  claimName: gitea-longhorn-storage-rev2 # 새로운 longhorn PVC 사용
+  claimName: gitea-shared-storage-rev2 # 새로운 longhorn PVC 사용
   size: 4Gi
   accessModes:
     - ReadWriteMany
