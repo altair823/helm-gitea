@@ -7,6 +7,7 @@ helmCharts:
   - name: gitea
     repo: https://dl.gitea.com/charts/
     releaseName: gitea
+    namespace: gitea  # Helm template의 .Release.Namespace 설정
     version: 12.4.0
     valuesFile: values-dev.yaml
 resources:
