@@ -2,6 +2,7 @@
 .vscode/
 .DS_Store
 kustomize/overlays/dev/charts/
+kustomize/overlays/prod/charts/
 dev.yaml
 prod.yaml
 upgrade/

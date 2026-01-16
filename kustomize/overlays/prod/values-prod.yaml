@@ -267,14 +267,14 @@ serviceAccount:
 ## @param persistence.volumeName Name of persistent volume in PVC
 persistence:
   enabled: true
-  create: true
+  create: true # kustomize에서 별도로 PVC 생성
   mount: true
-  claimName: gitea-shared-storage
+  claimName: gitea-shared-storage-rev2 # 새로운 longhorn PVC 사용
   size: 16Gi
   accessModes:
     - ReadWriteMany
   # labels: {}
-  storageClass: nfs-client
+  storageClass: longhorn
   # annotations:
   #   helm.sh/resource-policy: keep
 
@@ -436,7 +436,12 @@ gitea:
       SSH_PORT: 22 # rootful image
       SSH_LISTEN_PORT: 2222 # rootless image
     database:
-      HOST: gitea-postgresql-ha-pgpool.gitea.svc.cluster.local:5432
+      DB_TYPE: postgres
+      HOST: postgres-gitea-pgbouncer.postgres-gitea.svc.cluster.local:5432
+      NAME: gitea
+      USER: gitea
+      PASSWD: "h/bNGI843Ml1fmm9hosLcrfy"
+      SSL_MODE: require
     cache:
       ADAPTER: redis
       HOST: redis+cluster://:@gitea-valkey-cluster-headless.gitea.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
@@ -627,7 +632,7 @@ valkey:
 ## @section PostgreSQL HA
 postgresql-ha:
   ## @param postgresql-ha.enabled Enable PostgreSQL HA
-  enabled: true
+  enabled: false  # 외부 PGO postgres-gitea 사용
 
   ## @param postgresql-ha.global.postgresql.database Name for a custom database to create (overrides `auth.database`)
   ## @param postgresql-ha.global.postgresql.username Name for a custom user to create (overrides `auth.username`)
