@@ -1,0 +1,45 @@
+# 데이터 마이그레이션용 임시 Pod
+# 사용 후 삭제: kubectl delete -f temp-migration-pod.yaml
+#
+# 사용법:
+# 1. kubectl apply -f temp-migration-pod.yaml
+# 2. kubectl exec -it -n gitea gitea-migration -- /bin/sh
+# 3. cp -av /old-data/* /new-data/  (또는 rsync -av /old-data/ /new-data/)
+# 4. kubectl delete -f temp-migration-pod.yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gitea-migration
+  namespace: gitea
+  labels:
+    app: gitea-migration
+spec:
+  containers:
+    - name: migration
+      image: docker.gitea.com/gitea:1.25.2-rootless
+      command: ["/bin/sh", "-c", "echo 'Migration pod ready. Use kubectl exec to access.' && sleep infinity"]
+      volumeMounts:
+        - name: old-data
+          mountPath: /old-data
+          readOnly: true
+        - name: new-data
+          mountPath: /new-data
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi
+  volumes:
+    - name: old-data
+      persistentVolumeClaim:
+        claimName: gitea-shared-storage  # 기존 NFS PVC
+    - name: new-data
+      persistentVolumeClaim:
+        claimName: gitea-shared-storage-rev2  # 새 Longhorn PVC
+  restartPolicy: Never

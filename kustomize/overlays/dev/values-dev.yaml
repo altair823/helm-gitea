@@ -436,7 +436,11 @@ gitea:
       SSH_PORT: 22 # rootful image
       SSH_LISTEN_PORT: 2222 # rootless image
     database:
-      HOST: gitea-postgresql-ha-pgpool.gitea.svc.cluster.local:5432
+      DB_TYPE: postgres
+      HOST: postgres-gitea-pgbouncer.postgres-gitea.svc.cluster.local:5432
+      NAME: gitea
+      USER: gitea
+      PASSWD: "*uc?8SxpkwXyeO@h(RKqd0Gt"
     cache:
       ADAPTER: redis
       HOST: redis+cluster://:@gitea-valkey-cluster-headless.gitea.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
@@ -627,7 +631,7 @@ valkey:
 ## @section PostgreSQL HA
 postgresql-ha:
   ## @param postgresql-ha.enabled Enable PostgreSQL HA
-  enabled: true
+  enabled: false
 
   ## @param postgresql-ha.global.postgresql.database Name for a custom database to create (overrides `auth.database`)
   ## @param postgresql-ha.global.postgresql.username Name for a custom user to create (overrides `auth.username`)
