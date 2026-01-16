@@ -7,14 +7,12 @@ helmCharts:
   - name: gitea
     repo: https://dl.gitea.com/charts/
     releaseName: gitea
-    namespace: gitea  # Helm template의 .Release.Namespace 설정
+    namespace: gitea # Helm template의 .Release.Namespace 설정
     version: 12.4.0
     valuesFile: values-prod.yaml
 resources:
   - gateway.yaml
   - httproute.yaml
-  - pvc.yaml
 
 patchesStrategicMerge:
   - patch-init-secret.yaml
-  # patch-inline-config-secret.yaml 제거 - values-prod.yaml의 gitea.config와 중복
