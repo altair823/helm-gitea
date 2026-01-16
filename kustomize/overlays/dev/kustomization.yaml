@@ -16,4 +16,4 @@ resources:
 
 patchesStrategicMerge:
   - patch-init-secret.yaml
-  - patch-inline-config-secret.yaml
+  # patch-inline-config-secret.yaml 제거 - values-dev.yaml의 gitea.config와 중복
