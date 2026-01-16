@@ -441,6 +441,7 @@ gitea:
       NAME: gitea
       USER: gitea
       PASSWD: "*uc?8SxpkwXyeO@h(RKqd0Gt"
+      SSL_MODE: require
     cache:
       ADAPTER: redis
       HOST: redis+cluster://:@gitea-valkey-cluster-headless.gitea.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
