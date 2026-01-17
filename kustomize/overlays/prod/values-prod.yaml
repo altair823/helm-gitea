@@ -440,7 +440,7 @@ gitea:
       HOST: postgres-gitea-pgbouncer.postgres-gitea.svc.cluster.local:5432
       NAME: gitea
       USER: gitea
-      PASSWD: "h/bNGI843Ml1fmm9hosLcrfy"
+      PASSWD: "zR?SvUpcSk(R}[,Fm,53943A"
       SSL_MODE: require
     cache:
       ADAPTER: redis
