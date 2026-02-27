@@ -18,7 +18,12 @@ spec:
   containers:
     - name: migration
       image: docker.gitea.com/gitea:1.25.2-rootless
-      command: ["/bin/sh", "-c", "echo 'Migration pod ready. Use kubectl exec to access.' && sleep infinity"]
+      command:
+        [
+          "/bin/sh",
+          "-c",
+          "echo 'Migration pod ready. Use kubectl exec to access.' && sleep infinity",
+        ]
       volumeMounts:
         - name: old-data
           mountPath: /old-data
@@ -38,8 +43,8 @@ spec:
   volumes:
     - name: old-data
       persistentVolumeClaim:
-        claimName: gitea-shared-storage  # 기존 NFS PVC
+        claimName: gitea-shared-storage-rev2 # 기존 NFS PVC
     - name: new-data
       persistentVolumeClaim:
-        claimName: gitea-shared-storage-rev2  # 새 Longhorn PVC
+        claimName: gitea-shared-storage-rev3 # 새 Longhorn PVC
   restartPolicy: Never

@@ -268,12 +268,12 @@ persistence:
   enabled: true
   create: true # kustomize에서 별도로 PVC 생성
   mount: true
-  claimName: gitea-shared-storage-rev2 # 새로운 longhorn PVC 사용
+  claimName: gitea-shared-storage-rev3 # 새로운 longhorn PVC 사용
   size: 4Gi
   accessModes:
     - ReadWriteMany
   # labels: {}
-  storageClass: longhorn
+  storageClass: nfs-client
   # annotations:
   #   helm.sh/resource-policy: keep
 
