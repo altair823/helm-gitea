@@ -227,8 +227,7 @@ priorityClassName: ""
 ## @param deployment.labels Labels for the deployment
 ## @param deployment.annotations Annotations for the Gitea deployment to be created
 deployment:
-  env:
-    []
+  env: []
     # - name: VARIABLE
     #   value: my-value
   terminationGracePeriodSeconds: 60
@@ -395,8 +394,7 @@ gitea:
       tlsConfig: {}
 
   ## @param gitea.ldap LDAP configuration
-  ldap:
-    []
+  ldap: []
     # - name: "LDAP 1"
     #  existingSecret:
     #  securityProtocol:
@@ -413,8 +411,7 @@ gitea:
 
   # Either specify inline `key` and `secret` or refer to them via `existingSecret`
   ## @param gitea.oauth OAuth configuration
-  oauth:
-    []
+  oauth: []
     # - name: 'OAuth 1'
     #   provider:
     #   key:
@@ -547,7 +544,7 @@ valkey-cluster:
   usePasswordFiles: false
 
   persistence:
-    storageClass: longhorn
+    storageClass: local-path
     size: 1Gi
 
   ## @param valkey-cluster.image.repository Image repository, eg. `bitnamilegacy/valkey-cluster`.
